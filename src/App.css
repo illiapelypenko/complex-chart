@@ -5,3 +5,18 @@
     background-color: #7897FF;
     display: inline-block;
 }
+
+.label {
+    fill: #6E7191;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: Poppins, 'SansSerif';
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: 0.25px;
+}
+
+.labelY {
+    font-weight: 500;
+}
