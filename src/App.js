@@ -1,6 +1,6 @@
 import './App.css';
 import {CartesianGrid, Scatter, ScatterChart, Tooltip, XAxis, YAxis } from "recharts";
-import {normalizedData} from "./normalization2";
+import {normalizedData, totalTimePerDate } from "./normalization2";
 
 const groupsStyle = [
   {
@@ -59,6 +59,30 @@ const TimePeriodShape = (props) => {
   );
 };
 
+const TimePeriodShape2 = (props) => {
+  const { cx, cy, payload } = props;
+
+  const value = payload.hours;
+
+  const backgroundColor = '#D0F9BC';
+  const borderColor = '#339801';
+
+  const onePeriodPx = CHART_HEIGHT / 12;
+
+  return (
+    <rect
+      x={cx}
+      y={cy - (onePeriodPx * value) - 1}
+      width={BAR_WIDTH}
+      height={onePeriodPx * value}
+      fill={backgroundColor}
+      stroke={borderColor}
+      strokeWidth="0.5"
+      rx="1.75"
+    />
+  );
+};
+
 const LabelX = ({ x, y, payload }) =>
   <text x={x} y={y} dy={20} dx={30} className="label" textAnchor="middle">
     {payload.value}
@@ -66,6 +90,11 @@ const LabelX = ({ x, y, payload }) =>
 
 const LabelY = ({ x, y, payload }) =>
   <text x={x} y={y} dy={4} dx={-20} className="label labelY" textAnchor="middle">
+    {payload.value}
+  </text>
+
+const LabelY2 = ({ x, y, payload }) =>
+  <text x={x} y={y} dy={4} dx={-80} className="label labelY" textAnchor="middle">
     {payload.value}
   </text>
 
@@ -80,7 +109,9 @@ function App() {
         <CartesianGrid vertical={false} stroke="#D9DBE9" />
         <XAxis dataKey="date" type="category" allowDuplicatedCategory={false} scale="point" interval={0} tick={<LabelX />} padding={{ right: 60}} tickLine={false} axisLine={{ stroke: '#D9DBE9' }}/>
         <YAxis dataKey="timeKey" type="category" allowDuplicatedCategory={false} scale="point" tick={<LabelY />} padding={{ top: 28}} tickLine={false} axisLine={false}/>
+        <YAxis dataKey="hoursLabel" type="category" allowDuplicatedCategory={false} scale="point" tick={<LabelY2 />} padding={{ top: 28}} tickLine={false} axisLine={false}/>
         <Scatter data={normalizedData} shape={<TimePeriodShape />} />
+        <Scatter data={totalTimePerDate} shape={<TimePeriodShape2 />} />
       </ScatterChart>
     </div>
   );

@@ -520,6 +520,30 @@ function normalizeData(data) {
   return normalized;
 }
 
-console.log(JSON.stringify(normalizeData(serverData), undefined, 2));
+// console.log(JSON.stringify(normalizeData(serverData), undefined, 2));
+
 
 export const normalizedData = normalizeData(serverData).sort((a, b) => a.date.localeCompare(b.date));
+
+const totalTime = normalizedData.reduce((result, item) => {
+  const dateIndex = result.findIndex(resultItem => resultItem.date === item.date);
+  if (!result[dateIndex]) {
+    result.push({
+      date: item.date,
+      totalTime: item.value,
+    });
+  } else {
+    result[dateIndex].totalTime += item.value;
+  }
+
+  return result;
+}, []);
+
+export const totalTimePerDate = totalTime.map(item => {
+  item.hours = Math.floor(item.totalTime / 60 );
+  item.hoursLabel = item.hours + ' hrs';
+  // item.timeKey = '12 am';
+  return item;
+});
+
+console.log(totalTimePerDate);
