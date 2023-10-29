@@ -73,19 +73,25 @@ const TimePeriodShape = (props) => {
 const TimePeriodShape2 = (props) => {
   const { cx, cy, payload } = props;
 
-  const value = payload.hours;
+  const { hours, totalTime } = payload;
 
   const backgroundColor = "#D0F9BC";
   const borderColor = "#339801";
 
-  const onePeriodPx = CHART_HEIGHT / Y_GAP_AMOUNT;
+  const onePeriodPx = CHART_HEIGHT / 9;
+
+  // Calculate the height of the rectangle
+  const rectHeight = onePeriodPx * hours + (totalTime % 60);
+
+  // Adjust y to make sure rectangle starts from the bottom of the chart
+  const adjustedY = cy - rectHeight - 1;
 
   return (
     <rect
       x={cx}
-      y={cy - onePeriodPx * value - 1}
+      y={adjustedY}
       width={BAR_WIDTH}
-      height={onePeriodPx * value}
+      height={rectHeight}
       fill={backgroundColor}
       stroke={borderColor}
       strokeWidth="0.5"
@@ -118,13 +124,15 @@ const LabelY2 = ({ x, y, payload }) => (
     x={x}
     y={y}
     dy={4}
-    dx={-80}
+    dx={-10}
     className="label labelY"
     textAnchor="middle"
   >
     {payload.value}
   </text>
 );
+
+const hoursTicks = Array.from({ length: 9 }, (_, i) => i + " hrs");
 
 function App() {
   return (
@@ -153,8 +161,11 @@ function App() {
           padding={{ top: 28 }}
           tickLine={false}
           axisLine={false}
+          orientation="left"
+          yAxisId="1"
         />
         <YAxis
+          ticks={hoursTicks}
           dataKey="hoursLabel"
           type="category"
           allowDuplicatedCategory={false}
@@ -163,10 +174,21 @@ function App() {
           padding={{ top: 28 }}
           tickLine={false}
           axisLine={false}
+          position="insideLeft"
+          orientation="left"
+          yAxisId="2"
         />
 
-        <Scatter data={normalizedData} shape={<TimePeriodShape />} />
-        <Scatter data={totalTimePerDate} shape={<TimePeriodShape2 />} />
+        <Scatter
+          yAxisId="1"
+          data={normalizedData}
+          shape={<TimePeriodShape />}
+        />
+        <Scatter
+          yAxisId="2"
+          data={totalTimePerDate}
+          shape={<TimePeriodShape2 />}
+        />
       </ScatterChart>
     </div>
   );

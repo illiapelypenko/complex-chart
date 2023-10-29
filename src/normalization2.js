@@ -539,11 +539,21 @@ const totalTime = normalizedData.reduce((result, item) => {
   return result;
 }, []);
 
-export const totalTimePerDate = totalTime.map((item) => {
+const totalTimePerDateBasic = totalTime.map((item) => {
   item.hours = Math.floor(item.totalTime / 60);
-  item.hoursLabel = item.hours + " hrs";
+  // item.hoursLabel = item.hours + " hrs";
+  item.hoursLabel = "0 hrs";
   // item.timeKey = '12 am';
   return item;
 });
+
+const forYLabels = Array.from({ length: 9 }, (_, i) => ({
+  hoursLabel: i + " hrs",
+  hours: 0,
+  date: totalTimePerDateBasic[0].date,
+  totalTime: 0,
+}));
+
+export const totalTimePerDate = [...totalTimePerDateBasic, ...forYLabels];
 
 console.log(totalTimePerDate);
