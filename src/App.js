@@ -78,7 +78,7 @@ const TimePeriodShape2 = (props) => {
   const backgroundColor = "#D0F9BC";
   const borderColor = "#339801";
 
-  const onePeriodPx = CHART_HEIGHT / 9;
+  const onePeriodPx = CHART_HEIGHT / 8;
 
   // Calculate the height of the rectangle
   const rectHeight = onePeriodPx * hours + (totalTime % 60);
@@ -115,7 +115,7 @@ const LabelY = ({ x, y, payload }) => (
     className="label labelY"
     textAnchor="middle"
   >
-    {payload.value}
+    {payload.value === "00 am" ? "12 pm" : payload.value}
   </text>
 );
 
@@ -158,7 +158,7 @@ function App() {
           allowDuplicatedCategory={false}
           scale="point"
           tick={<LabelY />}
-          padding={{ top: 28 }}
+          // padding={{ top: 28 }}
           tickLine={false}
           axisLine={false}
           orientation="left"
@@ -171,7 +171,7 @@ function App() {
           allowDuplicatedCategory={false}
           scale="point"
           tick={<LabelY2 />}
-          padding={{ top: 28 }}
+          // padding={{ top: 28 }}
           tickLine={false}
           axisLine={false}
           position="insideLeft"

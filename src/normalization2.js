@@ -227,7 +227,7 @@ const serverData = [
       id: 2,
       name: "HIP FLEXORS AND THIGHS FRONT",
     },
-    date: "2023-11-03",
+    date: "2023-11-01",
     time00_02: null,
     time02_04: null,
     time04_06: null,
@@ -267,7 +267,7 @@ const serverData = [
       id: 4,
       name: "BACK OF THIGHS",
     },
-    date: "2023-11-02",
+    date: "2023-11-01",
     time00_02: null,
     time02_04: null,
     time04_06: null,
@@ -509,7 +509,7 @@ function normalizeData(data) {
           id: entry.id,
           exerciseGroupId: entry.exerciseGroupDto.id,
           exerciseGroupName: entry.exerciseGroupDto.name,
-          date: format(parse(entry.date, "yyyy-MM-dd", new Date()), "dd/MM/yy"),
+          date: entry.date,
           timeKey: durationMap[key],
           value: value ?? 0,
         });
@@ -517,12 +517,26 @@ function normalizeData(data) {
     });
   });
 
+  normalized
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .map((item) => ({
+      ...item,
+      date: format(parse(item.date, "yyyy-MM-dd", new Date()), "dd/MM/yy"),
+    }));
+
+  normalized.push({
+    id: normalized[0].id,
+    exerciseGroupId: normalized[0].exerciseGroupId,
+    exerciseGroupName: normalized[0].exerciseGroupName,
+    date: normalized[0].date,
+    timeKey: "00 am",
+    value: 0,
+  });
+
   return normalized;
 }
 
-export const normalizedData = normalizeData(serverData).sort((a, b) =>
-  a.date.localeCompare(b.date),
-);
+export const normalizedData = normalizeData(serverData);
 
 const totalTime = normalizedData.reduce((result, item) => {
   const dateIndex = result.findIndex(
@@ -557,3 +571,5 @@ const forYLabels = Array.from({ length: 9 }, (_, i) => ({
 export const totalTimePerDate = [...totalTimePerDateBasic, ...forYLabels];
 
 console.log(totalTimePerDate);
+console.log(normalizedData);
+console.log(normalizedData[0]);
