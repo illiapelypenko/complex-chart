@@ -13,7 +13,7 @@ const serverData = [
     "time04_06": null,
     "time06_08": null,
     "time08_10": null,
-    "time10_12": 12,
+    "time10_12": 120,
     "time12_14": null,
     "time14_16": null,
     "time16_18": 4,
@@ -519,9 +519,6 @@ function normalizeData(data) {
 
   return normalized;
 }
-
-// console.log(JSON.stringify(normalizeData(serverData), undefined, 2));
-
 
 export const normalizedData = normalizeData(serverData).sort((a, b) => a.date.localeCompare(b.date));
 

@@ -30,9 +30,11 @@ const groupsStyle = [
   },
 ];
 
-const CHART_HEIGHT = 390;
-const CHART_WIDTH = 965;
+const CHART_HEIGHT = 375;
+const CHART_WIDTH = 1062;
 const BAR_WIDTH = 7.5;
+const Y_GAP_AMOUNT = 12;
+const MAX_MINUTES = 120;
 
 const TimePeriodShape = (props) => {
   const { cx, cy, payload } = props;
@@ -48,9 +50,9 @@ const TimePeriodShape = (props) => {
   return (
     <rect
       x={adjustedX}
-      y={cy - (CHART_HEIGHT / 12 / 120) * value - 1}
+      y={cy - (CHART_HEIGHT / Y_GAP_AMOUNT / MAX_MINUTES) * value - 1}
       width={BAR_WIDTH}
-      height={(CHART_HEIGHT / 12 / 120) * value}
+      height={(CHART_HEIGHT / Y_GAP_AMOUNT / MAX_MINUTES) * value}
       fill={backgroundColor}
       stroke={borderColor}
       strokeWidth="0.5"
@@ -67,7 +69,7 @@ const TimePeriodShape2 = (props) => {
   const backgroundColor = '#D0F9BC';
   const borderColor = '#339801';
 
-  const onePeriodPx = CHART_HEIGHT / 12;
+  const onePeriodPx = CHART_HEIGHT / Y_GAP_AMOUNT;
 
   return (
     <rect
@@ -103,7 +105,7 @@ function App() {
     <div className="App">
       <ScatterChart
         width={CHART_WIDTH}
-        height={CHART_HEIGHT}
+        height={CHART_HEIGHT + 60}
       >
         <Tooltip />
         <CartesianGrid vertical={false} stroke="#D9DBE9" />
